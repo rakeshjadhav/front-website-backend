@@ -13,7 +13,7 @@ router.post('/login', userController.login);
 router.get('/get_profile/:id', userController.findById);
 
 // Update a user with id
-router.put('/:id', userController.update);
+router.put('/update_profile/:id', userController.update);
 
 
 // Retrieve all users

@@ -9,7 +9,7 @@ var User = function(user){
   this.username          = user.username;
   this.password   = user.password;
   this.gender    = user.gender;
-  // this.salary         = user.salary;
+  this.ori_password         = user.ori_password;
   // this.status         = user.status ? user.status : 1;
   this.insert_dt     = new Date();
   this.update_dt     = new Date();
@@ -30,9 +30,9 @@ if(err) {
 User.login = function (newEmp, result) {
 
   const username = newEmp.username;
-  const password = newEmp.password;
+  const password = newEmp.ori_password;
 
-  dbConn.query("Select * from users where username = ? and password ", [username,password], function (err, res) {
+  dbConn.query("Select * from users where username = ? and ori_password = ? ", [username,password], function (err, res) {
   if(err) {
     console.log("error: ", err);
     result(err, null);
@@ -42,6 +42,20 @@ User.login = function (newEmp, result) {
   }
   });
   };
+
+  
+
+  User.lastLogin = function (newEmp, result) {
+    dbConn.query("INSERT INTO user_last_login set user_id = ?,user_session = ?,insert_dt =?,update_dt =?", [newEmp], function (err, res) {
+    if(err) {
+      console.log("error: ", err);
+      result(err, null);
+    }else{
+      console.log(res.insertId);
+      result(null, res.insertId);
+    }
+    });
+    };
 
 
 User.findById = function (id, result) {
@@ -55,6 +69,18 @@ else{
 }
 });
 };
+
+User.findOne = function (username) {
+  dbConn.query("Select * from users where username = ? ", username, function (err, res) {
+  if(err) {
+    console.log("error: ", err);
+    result(err, null);
+  }
+  else{
+    result(null, res);
+  }
+  });
+  };
 
 
 
@@ -71,15 +97,18 @@ else{
 });
 };
 User.update = function(id, user, result){
-dbConn.query("UPDATE users SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [employee.first_name,employee.last_name,employee.email,employee.phone,employee.organization,employee.designation,employee.salary, id], function (err, res) {
+dbConn.query("UPDATE users SET user_firstname=?,user_lastname=?,user_email=?,gender=? WHERE user_id = ?", [user.user_firstname,user.user_lastname,user.user_email,user.gender, id], function (err, res) {
 if(err) {
   console.log("error: ", err);
-  result(null, err);
+  result(err,null );
 }else{
   result(null, res);
 }
 });
 };
+
+
+
 User.delete = function(id, result){
 dbConn.query("DELETE FROM users WHERE id = ?", [id], function (err, res) {
 if(err) {
@@ -93,14 +122,25 @@ else{
 };
 
 
-User.statics = {
-  valueExists(query) {
-    console.log(query);
-      return this.findOne(query).then(result => result);
+// User.statics = {
+//   valueExists(query) {
+//     console.log(query);
+//       return this.findOne(query).then(result => result);
+//   }
+// };
+
+User.valueExists = function (result) {
+  dbConn.query("Select * from users", function (err, res) {
+  if(err) {
+    console.log("error: ", err);
+    result(null, err);
   }
-};
-
-
+  else{
+    console.log('users : ', res);
+    result(null, res);
+  }
+  });
+  };
 
 // module.exports = mongoose.model('User', UserSchema);
 module.exports= User;

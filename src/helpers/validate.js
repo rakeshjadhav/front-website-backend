@@ -24,19 +24,19 @@ Validator.registerAsync('exist', function(value,  attribute, req, passes) {
     
     //assign array index 0 and 1 to table and column respectively
     const { 0: table, 1: column } = attArr;
-    alert(table);
+    // alert(table);
     //define custom error message
     let msg = (column == "username") ? `${column} has already been taken `: `${column} already in use`
 
-    //check if incoming value already exists in the database
-    // Models[table].valueExists({ [column]: value })
-    // .then((result) => {
-    //     if(result){
-    //         passes(false, msg); // return false if value exists
-    //         return;
-    //     }
-    //     passes();
-    // })
+    // check if incoming value already exists in the database
+    Models[table].valueExists({ [column]: value })
+    .then((result) => {
+        if(result){
+            passes(false, msg); // return false if value exists
+            return;
+        }
+        passes();
+    })
 
 });
 
