@@ -1,11 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
+const cookieParser = require('cookie-parser')
 // create express app
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser())
+app.use(cors({
+  credential :true, //origin
+}  
+));
 // Setup server port
 const port = process.env.PORT || 5000;
 // parse requests of content-type - application/x-www-form-urlencoded

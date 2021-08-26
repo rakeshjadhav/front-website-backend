@@ -1,5 +1,7 @@
 const Validator = require('validatorjs');
 const Models = require("../models/user.model");
+// const User = require('../models/user.model');
+
 
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
@@ -7,8 +9,6 @@ const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/;
 // Tighten password policy
 Validator.register('strict', value => passwordRegex.test(value),
     'password must contain at least one uppercase letter, one lowercase letter and one number');
-
-
 
 /**
  * Checks if incoming value already exist for unique and non-unique fields in the database 
@@ -29,14 +29,19 @@ Validator.registerAsync('exist', function(value,  attribute, req, passes) {
     let msg = (column == "username") ? `${column} has already been taken `: `${column} already in use`
 
     // check if incoming value already exists in the database
-    Models[table].valueExists({ [column]: value })
-    .then((result) => {
-        if(result){
+
+    const loginrdata = {
+            username : value,
+        }
+
+      Models.valueExists(loginrdata,function(err, res) {
+        if(res.length > 0){
             passes(false, msg); // return false if value exists
             return;
-        }
-        passes();
-    })
+         }else{
+            passes();
+         }  
+    });
 
 });
 

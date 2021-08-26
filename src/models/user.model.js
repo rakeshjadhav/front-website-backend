@@ -15,6 +15,13 @@ var User = function(user){
   this.update_dt     = new Date();
 };
 
+var Lastuser = function(lastuser){
+  this.user_id     = user.user_id;
+  this.user_access_token     = user.user_access_token;
+  this.insert_dt     = new Date();
+  this.update_dt     = new Date();
+};
+
 User.regsiter = function (newEmp, result) {
 dbConn.query("INSERT INTO users set ?", newEmp, function (err, res) {
 if(err) {
@@ -45,8 +52,8 @@ User.login = function (newEmp, result) {
 
   
 
-  User.lastLogin = function (newEmp, result) {
-    dbConn.query("INSERT INTO user_last_login set user_id = ?,user_session = ?,insert_dt =?,update_dt =?", [newEmp], function (err, res) {
+  Lastuser.lastLogin = function (login_details, result) {
+    dbConn.query("INSERT INTO user_last_login set ?", login_details, function (err, res) {
     if(err) {
       console.log("error: ", err);
       result(err, null);
@@ -122,15 +129,9 @@ else{
 };
 
 
-// User.statics = {
-//   valueExists(query) {
-//     console.log(query);
-//       return this.findOne(query).then(result => result);
-//   }
-// };
-
-User.valueExists = function (result) {
-  dbConn.query("Select * from users", function (err, res) {
+User.valueExists = function (name, result) {
+  const username = name;
+  dbConn.query("Select * from users where ?",[username], function (err, res) {
   if(err) {
     console.log("error: ", err);
     result(null, err);
