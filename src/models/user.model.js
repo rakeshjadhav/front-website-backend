@@ -11,8 +11,8 @@ var User = function(user){
   this.gender    = user.gender;
   this.ori_password         = user.ori_password;
   // this.status         = user.status ? user.status : 1;
-  this.insert_dt     = new Date();
-  this.update_dt     = new Date();
+  this.createdAt     = new Date();
+  this.createdAt     = new Date();
 };
 
 var Lastuser = function(lastuser){
