@@ -2,7 +2,7 @@
 const User = require('../models/user.model');
 const Userlast = require('../models/userlast.model');
 const validator = require('../helpers/validate');
-
+const Products = require('../models/products.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -185,14 +185,15 @@ exports.update = function(req, res) {
 
 
 exports.findAll = function(req, res) {
-  User.findAll(function(err, user) {
-console.log('controller')
-if (err)
-res.send(err);
-console.log('res', user);
-res.send(user);
-});
-};
+  
+  Products.findAll(function(err, products) {
+      console.log('controller')
+        if (err)
+        res.send(err);
+        console.log('res', products);
+        res.send({products : products});
+        });
+   };
 
 
 exports.delete = function(req, res) {
