@@ -8,7 +8,9 @@ function validateRequest(req, next, schema) {
     };
     const { error, value } = schema.validate(req.body, options);
     if (error) {
-        next(json(`Validation error: ${error.details.map(x => x.message).join(', ')}`));
+        console.log(error.details);
+         next(`Validation Error: ${error.details.map(x => x.message).join(', ')}`);
+
     } else {
         req.body = value;
         next();

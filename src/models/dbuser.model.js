@@ -9,7 +9,8 @@ function User(sequelize) {
         user_lastname: { type: DataTypes.STRING, allowNull: false },
         user_email: { type: DataTypes.STRING, allowNull: false },
         username: { type: DataTypes.STRING, allowNull: false },
-        password: { type: DataTypes.STRING, allowNull: false }
+        password: { type: DataTypes.STRING, allowNull: false },
+        hash: { type: DataTypes.STRING, allowNull: false }
     };
 
     const options = {
