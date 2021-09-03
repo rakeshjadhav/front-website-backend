@@ -20,7 +20,9 @@ async function create(params) {
     if (await db.User.findOne({ where: { username: params.username } })) {
         throw 'Username "' + params.username + '" is already taken';
     }
-
+    // if (await db.User.findOne({ where: { user_email: params.user_email } })) {
+    //     throw 'Email "' + params.username + '" is already taken';
+    // }
     // hash password
     if (params.password) {
         params.hash = await bcrypt.hash(params.password, 10);
@@ -53,6 +55,7 @@ async function update(id, params) {
 
     // validate
     const usernameChanged = params.username && user.username !== params.username;
+    
     if (usernameChanged && await db.User.findOne({ where: { username: params.username } })) {
         throw 'Username "' + params.username + '" is already taken';
     }

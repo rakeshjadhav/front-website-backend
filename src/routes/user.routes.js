@@ -78,8 +78,9 @@ function register(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string().empty(''),
-        lastName: Joi.string().empty(''),
+        user_firstname: Joi.string().empty(''),
+        user_lastname: Joi.string().empty(''),
+        user_email: Joi.string().empty(''),
         username: Joi.string().empty(''),
         password: Joi.string().min(6).empty('')
     });
