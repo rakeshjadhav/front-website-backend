@@ -27,6 +27,10 @@ router.get('/products', userController.findAll);
 router.delete('/:id', userController.delete);
 
 
+router.get('/usersinfo', userController.findAllUser);
+router.get('/usersinfo/:id', userController.findById);
+
+
 // new api
 
 router.post('/register', registerSchema, register);

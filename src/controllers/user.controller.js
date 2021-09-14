@@ -122,14 +122,7 @@ exports.login = async function(req, res) {
 
 
 exports.findById = function(req, res) {
-// const cookie = req.cookies.jwt
 
-// const claims = jwt.verify(cookie,'secret')
-//   if(!claims) {
-//     return res.status(401).send({
-//       message : 'unauthentictied'
-//     })
-//   }
 
     User.findById(req.params.id, function(err, user) {
         if (err){
@@ -138,7 +131,11 @@ exports.findById = function(req, res) {
           if(user.length > 0){
             //const {password, ...udata} = user
             // const {ori_password, ...userdata} = user
-            return  res.send({ error:true, message: "User Data Found",data:user});
+            var secondArray = [];
+            secondArray['id'] = `${user[0].user_id}`;
+           let arr3 = user.map((item, i) => Object.assign({}, item, secondArray));
+           return  res.send({user:arr3});// error:true, message: "User Data Found",
+
           }else{
             return  res.send({ error:false, message: "Invalid  Please try again. !!" });
           }
@@ -195,6 +192,20 @@ exports.findAll = function(req, res) {
         });
    };
 
+   exports.findAllUser = function(req, res) {
+  
+    User.findAll(function(err, user) {
+        console.log('controller')
+          if (err)
+          res.send(err);
+          // var secondArray = [];
+          //   secondArray['id'] = `${user[0].user_id}`;
+          //  let arr3 = user.map((item, i) => Object.assign({}, item, secondArray[i++]));
+
+          res.send(user);
+          });
+     };
+  
 
 exports.delete = function(req, res) {
     User.delete( req.params.id, function(err, user) {
